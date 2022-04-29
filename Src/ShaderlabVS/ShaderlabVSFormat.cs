@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.Composition;
+using System.ComponentModel.Composition;
 using System.Windows.Media;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
@@ -19,10 +19,7 @@ namespace ShaderlabVS
         /// <summary>
         /// Defines the visual format for the "Shaderlab-Text" classification type
         /// </summary>
-        public ShaderlabTextFormat()
-        {
-            this.DisplayName = Constants.ShaderlabText;
-        }
+        public ShaderlabTextFormat() => DisplayName = Constants.ShaderlabText;
     }
 
     /// <summary>
@@ -40,8 +37,8 @@ namespace ShaderlabVS
         /// </summary>
         public ShaderlabStrings()
         {
-            this.DisplayName = Constants.ShaderlabStrings;
-            this.ForegroundColor = Colors.DarkRed;
+            DisplayName = Constants.ShaderlabStrings;
+            ForegroundColor = Colors.DarkRed;
         }
     }
 
@@ -57,8 +54,8 @@ namespace ShaderlabVS
     {
         public ShaderlabFunctionFormat()
         {
-            this.DisplayName = Constants.ShaderlabFunction;
-            this.ForegroundColor = Colors.DarkMagenta;
+            DisplayName = Constants.ShaderlabFunction;
+            ForegroundColor = Colors.DarkMagenta;
         }
     }
 
@@ -74,8 +71,8 @@ namespace ShaderlabVS
     {
         public ShaderlabComment()
         {
-            this.DisplayName = Constants.ShaderlabComment;
-            this.ForegroundColor = Colors.ForestGreen;
+            DisplayName = Constants.ShaderlabComment;
+            ForegroundColor = Colors.ForestGreen;
         }
     }
 
@@ -91,8 +88,8 @@ namespace ShaderlabVS
     {
         public ShaderlabKeyword()
         {
-            this.DisplayName = Constants.ShaderlabHLSLCGKeyword;
-            this.ForegroundColor = Colors.Blue;
+            DisplayName = Constants.ShaderlabHLSLCGKeyword;
+            ForegroundColor = Colors.Blue;
         }
     }
 
@@ -108,8 +105,8 @@ namespace ShaderlabVS
     {
         public ShaderlabUnityBlockKeywords()
         {
-            this.DisplayName = Constants.ShaderlabUnityKeywords;
-            this.ForegroundColor = Colors.Blue;
+            DisplayName = Constants.ShaderlabUnityKeywords;
+            ForegroundColor = Colors.Blue;
         }
     }
 
@@ -125,8 +122,8 @@ namespace ShaderlabVS
     {
         public ShaderlabUnityKeywordsPara()
         {
-            this.DisplayName = Constants.ShaderlabUnityKeywordsPara;
-            this.ForegroundColor = Colors.DarkMagenta;
+            DisplayName = Constants.ShaderlabUnityKeywordsPara;
+            ForegroundColor = Colors.DarkMagenta;
         }
     }
 
@@ -142,8 +139,8 @@ namespace ShaderlabVS
     {
         public ShaderlabDataType()
         {
-            this.DisplayName = Constants.ShaderlabDataType;
-            this.ForegroundColor = Colors.Blue;
+            DisplayName = Constants.ShaderlabDataType;
+            ForegroundColor = Colors.Blue;
         }
     }
 
@@ -155,10 +152,9 @@ namespace ShaderlabVS
     {
         public BraceMarkerDefination()
         {
-            this.DisplayName = Constants.ShaderlabBracesMarker;
-            this.BackgroundColor = Colors.Gray;
+            DisplayName = Constants.ShaderlabBracesMarker;
+            BackgroundColor = Colors.Gray;
         }
     }
-
     #endregion //Format definition
 }

@@ -1,28 +1,28 @@
-﻿using Microsoft.VisualStudio.Language.Intellisense;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using ShaderlabVS.Data;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
 
 namespace ShaderlabVS
 {
     #region Shaderlab Quickinfo Source
     internal class ShaderlabQuickInfoSource : IQuickInfoSource
     {
-        private ShaderlabQuickInfoSourceProvider provider;
-        private ITextBuffer textBuffer;
-        private Dictionary<string, string> quickInfos;
+        private readonly ShaderlabQuickInfoSourceProvider _provider;
+        private readonly ITextBuffer _textBuffer;
+        private readonly Dictionary<string, string> _quickInfos;
 
         public ShaderlabQuickInfoSource(ShaderlabQuickInfoSourceProvider provider, ITextBuffer textBuffer)
         {
-            this.provider = provider;
-            this.textBuffer = textBuffer;
-            this.quickInfos = new Dictionary<string, string>();
-            isDisposed = false;
+            _provider = provider;
+            _textBuffer = textBuffer;
+            _quickInfos = new Dictionary<string, string>();
+            _isDisposed = false;
             QuickInfoInit();
         }
 
@@ -30,84 +30,85 @@ namespace ShaderlabVS
         {
             ShaderlabDataManager.Instance.HLSLCGFunctions.ForEach((f) =>
                 {
-                    if (quickInfos.ContainsKey(f.Name))
+                    if (_quickInfos.ContainsKey(f.Name))
                     {
-                        string info = quickInfos[f.Name];
-                        info = info + string.Format("\nFunction: {0}", f.Description);
-                        quickInfos[f.Name] = info;
+                        string info = _quickInfos[f.Name];
+                        info += $"\nFunction: {f.Description}";
+                        _quickInfos[f.Name] = info;
                     }
                     else
                     {
-                        quickInfos.Add(f.Name, f.Description);
+                        _quickInfos.Add(f.Name, f.Description);
                     }
                 });
 
             ShaderlabDataManager.Instance.UnityBuiltinDatatypes.ForEach((d) =>
                 {
-                    if (quickInfos.ContainsKey(d.Name))
+                    if (_quickInfos.ContainsKey(d.Name))
                     {
-                        quickInfos[d.Name] = quickInfos[d.Name] + string.Format("\nUnity3d built-in balues: {0}", d.Description);
+                        _quickInfos[d.Name] = _quickInfos[d.Name] + $"\nUnity3d built-in balues: {d.Description}";
                     }
                     else
                     {
-                        quickInfos.Add(d.Name, d.Description);
+                        _quickInfos.Add(d.Name, d.Description);
                     }
                 });
 
             ShaderlabDataManager.Instance.UnityBuiltinFunctions.ForEach((f) =>
                 {
-                    if (quickInfos.ContainsKey(f.Name))
+                    if (_quickInfos.ContainsKey(f.Name))
                     {
-                        quickInfos[f.Name] = quickInfos[f.Name] + string.Format("\nUnity3D built-in function: {0}", f.Description);
+                        _quickInfos[f.Name] = _quickInfos[f.Name] + $"\nUnity3D built-in function: {f.Description}";
                     }
                     else
                     {
-                        quickInfos.Add(f.Name, f.Description);
+                        _quickInfos.Add(f.Name, f.Description);
                     }
                 });
 
             ShaderlabDataManager.Instance.UnityBuiltinMacros.ForEach((f) =>
                 {
 
-                    string description = string.Format("{0}\n{1}", string.Join(";\n", f.Synopsis), f.Description);
-                    if (quickInfos.ContainsKey(f.Name))
+                    string description = $"{string.Join(";\n", f.Synopsis)}\n{f.Description}";
+                    if (_quickInfos.ContainsKey(f.Name))
                     {
-                        quickInfos[f.Name] = quickInfos[f.Name] + string.Format("\nUnity3D built-in macros: {0}", description);
+                        _quickInfos[f.Name] = _quickInfos[f.Name] + $"\nUnity3D built-in macros: {description}";
                     }
                     else
                     {
-                        quickInfos.Add(f.Name, description);
+                        _quickInfos.Add(f.Name, description);
                     }
                 });
 
             ShaderlabDataManager.Instance.UnityKeywords.ForEach((k) =>
                 {
-                    if (quickInfos.ContainsKey(k.Name))
+                    if (_quickInfos.ContainsKey(k.Name))
                     {
-                        quickInfos[k.Name] = quickInfos[k.Name] + string.Format("\nUnity3D keywords: {0}", k.Description);
+                        _quickInfos[k.Name] = _quickInfos[k.Name] + $"\nUnity3D keywords: {k.Description}";
                     }
                     else
                     {
-                        quickInfos.Add(k.Name, k.Description);
+                        _quickInfos.Add(k.Name, k.Description);
                     }
                 });
 
             ShaderlabDataManager.Instance.UnityBuiltinValues.ForEach((v) =>
                 {
-                    if (quickInfos.ContainsKey(v.Name))
+                    if (_quickInfos.ContainsKey(v.Name))
                     {
-                        quickInfos[v.Name] = quickInfos[v.Name] + string.Format("\nUnity3d built-in values: {0}", v.VauleDescription);
+                        _quickInfos[v.Name] = _quickInfos[v.Name] + $"\nUnity3d built-in values: {v.VauleDescription}";
                     }
                     else
                     {
-                        quickInfos.Add(v.Name, v.VauleDescription);
+                        _quickInfos.Add(v.Name, v.VauleDescription);
                     }
                 });
         }
 
         public void AugmentQuickInfoSession(IQuickInfoSession session, IList<object> quickInfoContent, out Microsoft.VisualStudio.Text.ITrackingSpan applicableToSpan)
         {
-            SnapshotPoint? sp = session.GetTriggerPoint(this.textBuffer.CurrentSnapshot);
+            SnapshotPoint? sp = session.GetTriggerPoint(_textBuffer.CurrentSnapshot);
+
             if (!sp.HasValue)
             {
                 applicableToSpan = null;
@@ -117,7 +118,7 @@ namespace ShaderlabVS
             ITextSnapshot currentSnapshot = sp.Value.Snapshot;
             SnapshotSpan span = new SnapshotSpan(sp.Value, 0);
 
-            ITextStructureNavigator navigator = provider.NavigatorService.GetTextStructureNavigator(this.textBuffer);
+            ITextStructureNavigator navigator = _provider.NavigatorService.GetTextStructureNavigator(_textBuffer);
             string keyText = navigator.GetExtentOfWord(sp.Value).Span.GetText().Trim();
 
             if (string.IsNullOrEmpty(keyText))
@@ -126,8 +127,8 @@ namespace ShaderlabVS
                 return;
             }
 
-            string info;
-            quickInfos.TryGetValue(keyText, out info);
+            _quickInfos.TryGetValue(keyText, out string info);
+
             if (!string.IsNullOrEmpty(info))
             {
                 applicableToSpan = currentSnapshot.CreateTrackingSpan(span.Start.Position, 9, SpanTrackingMode.EdgeInclusive);
@@ -138,18 +139,17 @@ namespace ShaderlabVS
             applicableToSpan = null;
         }
 
-        private bool isDisposed;
+        private bool _isDisposed;
 
         public void Dispose()
         {
-            if (!isDisposed)
+            if (!_isDisposed)
             {
                 GC.SuppressFinalize(this);
-                isDisposed = true;
+                _isDisposed = true;
             }
         }
     }
-
     #endregion
 
     #region Shaderlab Quickinfo Source Provider
@@ -165,10 +165,7 @@ namespace ShaderlabVS
         [Import]
         public ITextBufferFactoryService TextBufferFactoryService = null;
 
-        public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer)
-        {
-            return new ShaderlabQuickInfoSource(this, textBuffer);
-        }
+        public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer) => new ShaderlabQuickInfoSource(this, textBuffer);
     }
     #endregion
 
@@ -176,57 +173,55 @@ namespace ShaderlabVS
 
     internal class ShaderlabQuickInfoController : IIntellisenseController
     {
-        private ITextView textView;
-        private IList<ITextBuffer> textBuffers;
-        private ShaderlabQuickInfoControllerProvider controllerProvider;
-        private IQuickInfoSession quickInfoSession;
+        private ITextView _textView;
+        private readonly IList<ITextBuffer> _textBuffers;
+        private readonly ShaderlabQuickInfoControllerProvider _controllerProvider;
+        private IQuickInfoSession _quickInfoSession;
 
         public ShaderlabQuickInfoController(ITextView textView, IList<ITextBuffer> textBuffers, ShaderlabQuickInfoControllerProvider controllerProvider)
         {
-            this.textBuffers = textBuffers;
-            this.textView = textView;
-            this.controllerProvider = controllerProvider;
+            _textBuffers = textBuffers;
+            _textView = textView;
+            _controllerProvider = controllerProvider;
 
-            textView.MouseHover += textView_MouseHover;
+            textView.MouseHover += TextViewMouseHover;
         }
 
-        void textView_MouseHover(object sender, MouseHoverEventArgs e)
+        private void TextViewMouseHover(object sender, MouseHoverEventArgs e)
         {
-            SnapshotPoint? ssPoint = textView.BufferGraph.MapDownToFirstMatch(new SnapshotPoint(textView.TextSnapshot, e.Position),
+            SnapshotPoint? ssPoint = _textView.BufferGraph.MapDownToFirstMatch(new SnapshotPoint(_textView.TextSnapshot, e.Position),
                                                                             PointTrackingMode.Positive,
-                                                                            snapshot => textBuffers.Contains(snapshot.TextBuffer),
+                                                                            snapshot => _textBuffers.Contains(snapshot.TextBuffer),
                                                                             PositionAffinity.Predecessor);
+
             if (ssPoint != null)
             {
                 ITrackingPoint point = ssPoint.Value.Snapshot.CreateTrackingPoint(ssPoint.Value.Position, PointTrackingMode.Positive);
 
-                if (!controllerProvider.QuickInfoBroker.IsQuickInfoActive(this.textView))
+                if (!_controllerProvider.QuickInfoBroker.IsQuickInfoActive(_textView))
                 {
-                    quickInfoSession = controllerProvider.QuickInfoBroker.TriggerQuickInfo(textView, point, true);
+                    _quickInfoSession = _controllerProvider.QuickInfoBroker.TriggerQuickInfo(_textView, point, true);
                 }
             }
         }
 
-        public void Detach(Microsoft.VisualStudio.Text.Editor.ITextView textView)
+        public void Detach(ITextView textView)
         {
-            if (this.textView == textView)
+            if (_textView == textView)
             {
-                this.textView.MouseHover -= textView_MouseHover;
-                this.textView = null;
+                _textView.MouseHover -= TextViewMouseHover;
+                _textView = null;
             }
         }
 
         public void DisconnectSubjectBuffer(ITextBuffer subjectBuffer)
         {
-
         }
 
         public void ConnectSubjectBuffer(ITextBuffer subjectBuffer)
         {
-
         }
     }
-
     #endregion
 
     #region Shaderlab Quickinfo Controller Provoider
@@ -239,12 +234,10 @@ namespace ShaderlabVS
         [Import]
         public IQuickInfoBroker QuickInfoBroker { get; set; }
 
-
         public IIntellisenseController TryCreateIntellisenseController(ITextView textView, IList<ITextBuffer> subjectBuffers)
         {
             return new ShaderlabQuickInfoController(textView, subjectBuffers, this);
         }
     }
-
     #endregion
 }

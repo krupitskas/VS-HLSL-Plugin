@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.Text.Classification;
-using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Text.Classification;
+using Microsoft.VisualStudio.Utilities;
 
 namespace ShaderlabVS
 {
@@ -37,7 +37,5 @@ namespace ShaderlabVS
         [Export(typeof(ClassificationTypeDefinition))]
         [Name(Constants.ShaderlabDataType)]
         internal static ClassificationTypeDefinition ShaderlabDataTypeType = null;
-
-
     }
 }

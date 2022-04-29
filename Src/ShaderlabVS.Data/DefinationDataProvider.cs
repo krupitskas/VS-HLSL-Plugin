@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -14,27 +14,23 @@ namespace ShaderlabVS.Data
             List<T> list = new List<T>();
             Type t = typeof(T);
 
-            if (t == null)
+            if (t is null)
             {
-                throw new TypeLoadException(String.Format("Cannot find Type {0}", t.ToString()));
+                throw new TypeLoadException($"Cannot find Type {t}");
             }
 
-            foreach (var section in dr.Sections)
+            foreach (Dictionary<string, string> section in dr.Sections)
             {
-                T tInstance = t.Assembly.CreateInstance(t.ToString()) as T;
-                if (tInstance == null)
+                if (!(t.Assembly.CreateInstance(t.ToString()) is T tInstance))
                 {
-                    throw new TypeLoadException(String.Format("Create Type {0} failed", t.ToString()));
+                    throw new TypeLoadException($"Create Type {t} failed");
                 }
 
-                // Set the property value to the instance of T 
-                //
+                // Set the property value to the instance of T
                 foreach (PropertyInfo property in t.GetProperties())
                 {
                     // Get DefinationKey attribute
-                    //
-                    DefinationKeyAttribute dkattr = property.GetCustomAttributes(typeof(DefinationKeyAttribute)).FirstOrDefault() as DefinationKeyAttribute;
-                    if (dkattr != null)
+                    if (property.GetCustomAttributes(typeof(DefinationKeyAttribute)).FirstOrDefault() is DefinationKeyAttribute dkattr)
                     {
                         // get value in 
                         //
@@ -46,7 +42,7 @@ namespace ShaderlabVS.Data
                     }
                 }
 
-                ModelBase mb = tInstance as ModelBase;
+                ModelBase mb = tInstance;
                 mb.PrepareProperties();
 
                 list.Add(tInstance);

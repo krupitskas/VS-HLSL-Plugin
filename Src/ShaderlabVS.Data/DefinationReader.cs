@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -41,20 +41,12 @@ namespace ShaderlabVS.Data
     /// </summary>
     public class DefinationReader
     {
-        private List<Dictionary<string, string>> sections;
-
         /// <summary>
         /// Gets the Sections defined in the .def file 
         /// </summary>
-        public List<Dictionary<string, string>> Sections
-        {
-            get
-            {
-                return sections;
-            }
-        }
+        public List<Dictionary<string, string>> Sections { get; }
 
-        private string defFileName;
+        private readonly string _defFileName;
 
         /// <summary>
         /// Constructor
@@ -62,8 +54,8 @@ namespace ShaderlabVS.Data
         /// <param name="defFileName">The .def file name</param>
         public DefinationReader(string defFileName)
         {
-            sections = new List<Dictionary<string, string>>();
-            this.defFileName = defFileName;
+            Sections = new List<Dictionary<string, string>>();
+            _defFileName = defFileName;
         }
 
         /// <summary>
@@ -71,23 +63,23 @@ namespace ShaderlabVS.Data
         /// </summary>
         public void Read()
         {
-            if(!File.Exists(defFileName))
+            if (!File.Exists(_defFileName))
             {
-                throw new FileNotFoundException(string.Format("{0} is not founded", defFileName));
+                throw new FileNotFoundException($"{_defFileName} is not founded");
             }
 
-            string content = RemoveAllCommentsLines(File.ReadAllLines(defFileName)).Trim();
-            string sectionPattern = @"\{%[\s\S]*?%\}";
-            foreach (Match match in Regex.Matches(content, sectionPattern))
+            string content = RemoveAllCommentsLines(File.ReadAllLines(_defFileName)).Trim();
+
+            foreach (Match match in Regex.Matches(content, @"\{%[\s\S]*?%\}"))
             {
-                string m = match.ToString();
-                sections.Add(ParseSectionFromeText(match.ToString()));
+                Sections.Add(ParseSectionFromeText(match.ToString()));
             }
         }
 
         private string RemoveAllCommentsLines(string[] lines)
         {
             StringBuilder newContent = new StringBuilder();
+
             foreach (string line in lines)
             {
                 if (line.Trim().StartsWith("#"))
@@ -104,8 +96,8 @@ namespace ShaderlabVS.Data
         private Dictionary<string, string> ParseSectionFromeText(string sectionText)
         {
             Dictionary<string, string> sectionDict = new Dictionary<string, string>();
-            string pairPattern = @"%\$(?<key>[\s\S]+?)=\s*?\{(?<value>[\s\S]*?)\}\s*?\$%";
-            foreach (Match match in Regex.Matches(sectionText, pairPattern))
+
+            foreach (Match match in Regex.Matches(sectionText, @"%\$(?<key>[\s\S]+?)=\s*?\{(?<value>[\s\S]*?)\}\s*?\$%"))
             {
                 string key = match.Groups["key"].Value.ToString().Trim();
                 string value = match.Groups["value"].Value.ToString().Trim();
@@ -121,12 +113,13 @@ namespace ShaderlabVS.Data
 
         private string Escape(string input)
         {
-            return input.Replace(@"\#", "#")
-                        .Replace(@"\{", "{")
-                        .Replace(@"\}", "}")
-                        .Replace(@"\$", "$")
-                        .Replace(@"\=", "=")
-                        .Replace(@"\%", "%");
+            return input
+                .Replace(@"\#", "#")
+                .Replace(@"\{", "{")
+                .Replace(@"\}", "}")
+                .Replace(@"\$", "$")
+                .Replace(@"\=", "=")
+                .Replace(@"\%", "%");
         }
     }
 }

@@ -1,12 +1,12 @@
-﻿using ShaderlabVS.Data;
 using System.IO;
 using System.Linq;
+using ShaderlabVS.Data;
 
 namespace ShaderlabVS.LexTools
 {
-    class Program
+    internal class Program
     {
-        private static string lexFormat = @"
+        private static readonly string s_lexFormat = @"
 %namespace ShaderlabVS.Lexer
 %option verbose, summary, noparser, nofiles, unicode
 %using System.Runtime.Serialization.Formatters.Binary;
@@ -155,7 +155,7 @@ UNITYBuiltinValues          {$UNITYBuiltinValues$}
 %%
 ";
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             string convertedFileName = "Shaerlab.lex";
 
@@ -164,7 +164,7 @@ UNITYBuiltinValues          {$UNITYBuiltinValues$}
                 convertedFileName = args[0].Trim();
             }
 
-            string lex = lexFormat;
+            string lex = s_lexFormat;
             lex = lex.Replace("{$HLSLCGBlockKeyWords$}", string.Join("|", ShaderlabDataManager.Instance.HLSLCGBlockKeywords).ToLower());
             lex = lex.Replace("{$HLSLCGNonBlockKeyWords$}", string.Join("|", ShaderlabDataManager.Instance.HLSLCGNonblockKeywords).ToLower());
             lex = lex.Replace("{$HLSLCGSpecialKeyWords$}", string.Join("|", ShaderlabDataManager.Instance.HLSLCGSpecialKeywords).ToLower());

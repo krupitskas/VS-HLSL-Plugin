@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +11,8 @@ namespace ShaderlabVS.Data
         /// Do something to modify the property values
         /// </summary>
         public virtual void PrepareProperties()
-        { }
+        {
+        }
     }
 
     public class FunctionBase : ModelBase
@@ -38,6 +39,7 @@ namespace ShaderlabVS.Data
         public override void PrepareProperties()
         {
             base.PrepareProperties();
+
             if (!string.IsNullOrEmpty(RawSynopsisData.Trim()))
             {
                 Synopsis.Clear();
@@ -52,7 +54,6 @@ namespace ShaderlabVS.Data
     #region HLSL/CG
     public class HLSLCGFunction : FunctionBase
     {
-
     }
 
     public class HLSLCGKeywords : ModelBase
@@ -77,7 +78,7 @@ namespace ShaderlabVS.Data
             base.PrepareProperties();
             Keywords.Clear();
             HashSet<string> keywordSet = new HashSet<string>();
-            var kwlist = RawKeywordsData.Split(new char[] { ',', ';', '\n', '\r', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> kwlist = RawKeywordsData.Split(new char[] { ',', ';', '\n', '\r', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             kwlist.ForEach(s => keywordSet.Add(s));
             Keywords.AddRange(keywordSet.ToList());
             Keywords.ForEach(s => s = s.Trim());
@@ -101,8 +102,8 @@ namespace ShaderlabVS.Data
         {
             base.PrepareProperties();
             DataTypes.Clear();
-            HashSet<String> datatypes = new HashSet<string>();
-            var list = RawDataTypeData.Split(new char[] { ',', ';', '\n', '\r', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            HashSet<string> datatypes = new HashSet<string>();
+            List<string> list = RawDataTypeData.Split(new char[] { ',', ';', '\n', '\r', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             list.ForEach(s => datatypes.Add(s));
             DataTypes.AddRange(datatypes.ToList());
             DataTypes.ForEach(s => s = s.Trim());
@@ -133,12 +134,10 @@ namespace ShaderlabVS.Data
 
     public class UnityBuiltinFunction : FunctionBase
     {
-
     }
 
     public class UnityBuiltinMacros : FunctionBase
     {
-
     }
 
 
@@ -174,6 +173,5 @@ namespace ShaderlabVS.Data
             Description = string.Empty;
         }
     }
-
     #endregion
 }

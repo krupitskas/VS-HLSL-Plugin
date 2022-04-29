@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.Text;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 using ShaderlabVS.Lexer;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
 
 namespace ShaderlabVS
 {
@@ -65,55 +65,51 @@ namespace ShaderlabVS
     #endregion //provider def
 
     #region Classifier
-
     internal sealed class ShaderlabClassifier : ITagger<ClassificationTag>
     {
+        static ShaderlabClassifier() => Scanner.LoadTableDataFromLex();
 
-        static ShaderlabClassifier()
-        {
-            Scanner.LoadTableDataFromLex();
-        }
-
-        Dictionary<ShaderlabToken, IClassificationType> classTypeDict;
-        Scanner scanner;
-        ITextBuffer textBuffer;
+        private readonly Dictionary<ShaderlabToken, IClassificationType> _classTypeDict;
+        private readonly Scanner _scanner;
+        private readonly ITextBuffer _textBuffer;
 
         public ShaderlabClassifier(ITextBuffer buffer, IClassificationTypeRegistryService registerService)
         {
-            textBuffer = buffer;
-            scanner = new Scanner();
+            _textBuffer = buffer;
+            _scanner = new Scanner();
 
-            classTypeDict = new Dictionary<ShaderlabToken, IClassificationType>();
-            classTypeDict.Add(ShaderlabToken.TEXT, registerService.GetClassificationType(Constants.ShaderlabText));
-            classTypeDict.Add(ShaderlabToken.COMMENT, registerService.GetClassificationType(Constants.ShaderlabComment));
-            classTypeDict.Add(ShaderlabToken.HLSLCGDATATYPE, registerService.GetClassificationType(Constants.ShaderlabDataType));
-            classTypeDict.Add(ShaderlabToken.HLSLCGFUNCTION, registerService.GetClassificationType(Constants.ShaderlabFunction));
-            classTypeDict.Add(ShaderlabToken.HLSLCGKEYWORD, registerService.GetClassificationType(Constants.ShaderlabHLSLCGKeyword));
-            classTypeDict.Add(ShaderlabToken.HLSLCGKEYWORDSPECIAL, registerService.GetClassificationType(Constants.ShaderlabHLSLCGKeyword));
-            classTypeDict.Add(ShaderlabToken.UNITYKEYWORD, registerService.GetClassificationType(Constants.ShaderlabUnityKeywords));
-            classTypeDict.Add(ShaderlabToken.UNITYKEYWORD_PARA, registerService.GetClassificationType(Constants.ShaderlabUnityKeywordsPara));
-            classTypeDict.Add(ShaderlabToken.UNITYDATATYPE, registerService.GetClassificationType(Constants.ShaderlabDataType));
-            classTypeDict.Add(ShaderlabToken.UNITYFUNCTION, registerService.GetClassificationType(Constants.ShaderlabFunction));
-            classTypeDict.Add(ShaderlabToken.STRING_LITERAL, registerService.GetClassificationType(Constants.ShaderlabStrings));
-            classTypeDict.Add(ShaderlabToken.UNITYVALUES, registerService.GetClassificationType(Constants.ShaderlabUnityKeywords));
-            classTypeDict.Add(ShaderlabToken.UNDEFINED, registerService.GetClassificationType(Constants.ShaderlabText));
+            _classTypeDict = new Dictionary<ShaderlabToken, IClassificationType>
+            {
+                { ShaderlabToken.TEXT, registerService.GetClassificationType(Constants.ShaderlabText) },
+                { ShaderlabToken.COMMENT, registerService.GetClassificationType(Constants.ShaderlabComment) },
+                { ShaderlabToken.HLSLCGDATATYPE, registerService.GetClassificationType(Constants.ShaderlabDataType) },
+                { ShaderlabToken.HLSLCGFUNCTION, registerService.GetClassificationType(Constants.ShaderlabFunction) },
+                { ShaderlabToken.HLSLCGKEYWORD, registerService.GetClassificationType(Constants.ShaderlabHLSLCGKeyword) },
+                { ShaderlabToken.HLSLCGKEYWORDSPECIAL, registerService.GetClassificationType(Constants.ShaderlabHLSLCGKeyword) },
+                { ShaderlabToken.UNITYKEYWORD, registerService.GetClassificationType(Constants.ShaderlabUnityKeywords) },
+                { ShaderlabToken.UNITYKEYWORD_PARA, registerService.GetClassificationType(Constants.ShaderlabUnityKeywordsPara) },
+                { ShaderlabToken.UNITYDATATYPE, registerService.GetClassificationType(Constants.ShaderlabDataType) },
+                { ShaderlabToken.UNITYFUNCTION, registerService.GetClassificationType(Constants.ShaderlabFunction) },
+                { ShaderlabToken.STRING_LITERAL, registerService.GetClassificationType(Constants.ShaderlabStrings) },
+                { ShaderlabToken.UNITYVALUES, registerService.GetClassificationType(Constants.ShaderlabUnityKeywords) },
+                { ShaderlabToken.UNDEFINED, registerService.GetClassificationType(Constants.ShaderlabText) }
+            };
         }
 
         public IEnumerable<ITagSpan<ClassificationTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
             ShaderlabCompletionSource.ClearWordsInDocuments();
             ShaderlabCompletionSource.SetWordsInDocuments(spans[0].Snapshot.GetText());
-            
+
             string text = " " + spans[0].Snapshot.GetText().ToLower();
-            scanner.SetSource(text, 0);
+            _scanner.SetSource(text, 0);
             int token;
-            IClassificationType cf;
-                
+
             do
             {
-                token = scanner.NextToken();
-                int pos = scanner.GetPos();
-                int length = scanner.GetLength();
+                token = _scanner.NextToken();
+                int pos = _scanner.GetPos();
+                int length = _scanner.GetLength();
 
                 if (pos < 0 || length < 0 || pos > text.Length)
                 {
@@ -125,7 +121,7 @@ namespace ShaderlabVS
                     length = text.Length - pos;
                 }
 
-                if (classTypeDict.TryGetValue((ShaderlabToken)token, out cf))
+                if (_classTypeDict.TryGetValue((ShaderlabToken)token, out IClassificationType cf))
                 {
                     switch ((ShaderlabToken)token)
                     {
@@ -138,17 +134,17 @@ namespace ShaderlabVS
                         case ShaderlabToken.UNITYMACROS:
                         case ShaderlabToken.UNITYDATATYPE:
                         case ShaderlabToken.UNITYVALUES:
-                            length = length - 2;
-                            scanner.PushbackText(length + 1);
+                            length -= 2;
+                            _scanner.PushbackText(length + 1);
                             break;
                         case ShaderlabToken.HLSLCGKEYWORDSPECIAL:
-                            pos--;
-                            length = length - 1;
-                            scanner.PushbackText(length);
+                            --pos;
+                            --length;
+                            _scanner.PushbackText(length);
                             break;
                         case ShaderlabToken.STRING_LITERAL:
                         case ShaderlabToken.COMMENT:
-                            pos--;
+                            --pos;
                             break;
                     }
 
@@ -157,12 +153,12 @@ namespace ShaderlabVS
                         continue;
                     }
 
-                    yield return new TagSpan<ClassificationTag>(new SnapshotSpan(spans[0].Snapshot, new Span(pos, length)),
-                                                                new ClassificationTag(cf));
+                    yield return new TagSpan<ClassificationTag>(new SnapshotSpan(spans[0].Snapshot, new Span(pos, length)), new ClassificationTag(cf));
 
                 }
 
-            } while (token > (int)Tokens.EOF);
+            }
+            while (token > (int)Tokens.EOF);
 
         }
 
@@ -172,6 +168,5 @@ namespace ShaderlabVS
             remove { }
         }
     }
-
     #endregion //Classifier
 }

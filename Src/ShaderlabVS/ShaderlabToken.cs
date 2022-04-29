@@ -1,6 +1,6 @@
-﻿namespace ShaderlabVS
+namespace ShaderlabVS
 {
-    internal enum ShaderlabToken
+    internal enum ShaderlabToken : byte
     {
         TEXT,
         COMMENT,
@@ -15,6 +15,6 @@
         UNITYDATATYPE,
         UNITYFUNCTION,
         UNITYMACROS,
-        UNDEFINED,
+        UNDEFINED
     }
 }

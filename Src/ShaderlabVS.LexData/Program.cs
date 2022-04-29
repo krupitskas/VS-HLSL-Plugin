@@ -1,12 +1,9 @@
-﻿using ShaderlabVS.Lexer;
+using ShaderlabVS.Lexer;
 
 namespace ShaderlabVS.LexData
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
-        {
-            Scanner.GenerateTableData();
-        }
+        private static void Main(string[] args) => Scanner.GenerateTableData();
     }
 }

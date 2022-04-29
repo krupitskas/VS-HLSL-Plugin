@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.Text;
-using System;
+using Microsoft.VisualStudio.Text;
 
 namespace ShaderlabVS
 {
@@ -8,37 +7,32 @@ namespace ShaderlabVS
         public static bool IsCommentLine(string lineText)
         {
             string checkText = lineText.Trim();
-            if (checkText.StartsWith("//")
-               || checkText.StartsWith("/*")
-               || checkText.EndsWith("*/"))
-            {
-                return true;
-            }
 
-            return false;
+            return checkText.StartsWith("//") || checkText.StartsWith("/*") || checkText.EndsWith("*/");
         }
 
         public static bool IsInCommentLine(SnapshotPoint position)
         {
             string lineText = position.GetContainingLine().GetText();
-            return Utilities.IsCommentLine(lineText);
+            return IsCommentLine(lineText);
         }
 
         public static int IndexOfNonWhitespaceCharacter(string text)
         {
-            for (int i = 0; i < text.Length; i++)
+            for (int i = 0; i < text.Length; ++i)
             {
-                if (!Char.IsWhiteSpace(text[i]))
+                if (!char.IsWhiteSpace(text[i]))
                 {
                     return i;
                 }
             }
+
             return -1;
         }
 
         public static bool IsInCGOrHLSLFile(string filePath)
         {
-            var lower = filePath.ToLower();
+            string lower = filePath.ToLower();
             return lower.EndsWith(".cg") || lower.EndsWith(".hlsl");
         }
     }

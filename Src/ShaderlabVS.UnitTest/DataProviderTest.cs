@@ -1,6 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ShaderlabVS.Data;
 using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ShaderlabVS.Data;
 
 namespace ShaderlabVS.UnitTest
 {
@@ -10,15 +11,15 @@ namespace ShaderlabVS.UnitTest
         [TestMethod]
         public void TestUnityBuiltInValues()
         {
-            string defFileName = "Data\\Unity3D_values.def";
+            string defFileName = @"Data\Unity3D_values.def";
             DefinationReader dr = new DefinationReader(defFileName);
             dr.Read();
             Console.WriteLine(dr.Sections.Count);
 
-            var dataList = DefinationDataProvider<UnityBuiltinValue>.ProvideFromFile(defFileName);
+            List<UnityBuiltinValue> dataList = DefinationDataProvider<UnityBuiltinValue>.ProvideFromFile(defFileName);
             Console.WriteLine(dataList.Count);
 
-            foreach (var val in dataList)
+            foreach (UnityBuiltinValue val in dataList)
             {
                 Console.WriteLine("-----------------Values--------------------");
                 Console.WriteLine("Name={0}", val.Name);
@@ -32,7 +33,8 @@ namespace ShaderlabVS.UnitTest
         public void TestHLSLCGFunctions()
         {
             string file = "Data\\HLSL_CG_functions.def";
-            var funList = DefinationDataProvider<HLSLCGFunction>.ProvideFromFile(file);
+            List<HLSLCGFunction> funList = DefinationDataProvider<HLSLCGFunction>.ProvideFromFile(file);
+
             foreach (HLSLCGFunction fun in funList)
             {
                 Console.WriteLine("-----------------Function--------------------");
@@ -47,7 +49,8 @@ namespace ShaderlabVS.UnitTest
         public void TestHLSLKeywords()
         {
             string file = "Data\\HLSL_CG_Keywords.def";
-            var funList = DefinationDataProvider<HLSLCGKeywords>.ProvideFromFile(file);
+            List<HLSLCGKeywords> funList = DefinationDataProvider<HLSLCGKeywords>.ProvideFromFile(file);
+
             foreach (HLSLCGKeywords fun in funList)
             {
                 Console.WriteLine("-----------------Function--------------------");
@@ -60,7 +63,8 @@ namespace ShaderlabVS.UnitTest
         public void TestHLSLDatatype()
         {
             string file = "Data\\HLSL_CG_datatype.def";
-            var list = DefinationDataProvider<HLSLCGDataTypes>.ProvideFromFile(file);
+            List<HLSLCGDataTypes> list = DefinationDataProvider<HLSLCGDataTypes>.ProvideFromFile(file);
+
             foreach (HLSLCGDataTypes dt in list)
             {
                 Console.WriteLine("-----------------datatype--------------------");
@@ -72,8 +76,9 @@ namespace ShaderlabVS.UnitTest
         public void TestUnitydatatype()
         {
             string file = "Data\\Unity3D_datatype.def";
-            var list = DefinationDataProvider<UnityBuiltinDatatype>.ProvideFromFile(file);
-            foreach (var item in list)
+            List<UnityBuiltinDatatype> list = DefinationDataProvider<UnityBuiltinDatatype>.ProvideFromFile(file);
+
+            foreach (UnityBuiltinDatatype item in list)
             {
                 Console.WriteLine("-----------------datatype--------------------");
                 Console.WriteLine("Name = {0}", string.Join("\n", item.Name));
@@ -85,7 +90,8 @@ namespace ShaderlabVS.UnitTest
         public void TestUnityFunctions()
         {
             string file = "Data\\Unity3D_functions.def";
-            var funList = DefinationDataProvider<UnityBuiltinFunction>.ProvideFromFile(file);
+            List<UnityBuiltinFunction> funList = DefinationDataProvider<UnityBuiltinFunction>.ProvideFromFile(file);
+
             foreach (UnityBuiltinFunction fun in funList)
             {
                 Console.WriteLine("-----------------Function--------------------");
@@ -100,8 +106,9 @@ namespace ShaderlabVS.UnitTest
         public void TestUnityMacros()
         {
             string file = "Data\\Unity3D_macros.def";
-            var list = DefinationDataProvider<UnityBuiltinMacros>.ProvideFromFile(file);
-            foreach (var item in list)
+            List<UnityBuiltinMacros> list = DefinationDataProvider<UnityBuiltinMacros>.ProvideFromFile(file);
+
+            foreach (UnityBuiltinMacros item in list)
             {
                 Console.WriteLine("-----------------Macros--------------------");
                 Console.WriteLine("Name={0}", item.Name);
@@ -112,9 +119,6 @@ namespace ShaderlabVS.UnitTest
         }
 
         [TestMethod]
-        public void TestDataManger()
-        {
-            Console.WriteLine(string.Join("\r", ShaderlabDataManager.Instance.HLSLCGBlockKeywords));
-        }
+        public void TestDataManger() => Console.WriteLine(string.Join("\r", ShaderlabDataManager.Instance.HLSLCGBlockKeywords));
     }
 }

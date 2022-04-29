@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio;
-using System;
+﻿using System;
+using Microsoft.VisualStudio;
 
 namespace ShaderlabVS
 {

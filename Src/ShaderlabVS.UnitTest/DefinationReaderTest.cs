@@ -1,7 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ShaderlabVS.Data;
 using System;
 using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ShaderlabVS.Data;
 
 namespace ShaderlabVS.UnitTest
 {
@@ -11,17 +11,19 @@ namespace ShaderlabVS.UnitTest
         [TestMethod]
         public void ParseTest()
         {
-            DefinationReader dr = new DefinationReader("Data\\test.def");
+            DefinationReader dr = new DefinationReader(@"Data\test.def");
             dr.Read();
             StringBuilder sb = new StringBuilder();
-            foreach (var section in dr.Sections)
+
+            foreach (System.Collections.Generic.Dictionary<string, string> section in dr.Sections)
             {
                 Console.WriteLine("-----------------Sections--------------------");
                 sb.AppendLine("-----------------Sections--------------------");
-                foreach (var pair in section)
+
+                foreach (System.Collections.Generic.KeyValuePair<string, string> pair in section)
                 {
                     Console.WriteLine("({0})=({1})", pair.Key, pair.Value);
-                    sb.AppendLine(string.Format("({0})=({1})", pair.Key, pair.Value));
+                    sb.AppendLine($"({pair.Key})=({pair.Value})");
                 }
             }
 
