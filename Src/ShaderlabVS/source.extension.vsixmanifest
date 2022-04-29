@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="ShaderlabVS..c702cfb7-573c-45f4-9469-115fcb519ad2" Version="0.8" Language="en-US" Publisher="Rocky Lai, Mindstyler" />
+        <Identity Id="ShaderlabVS..c702cfb7-573c-45f4-9469-115fcb519ad2" Version="0.8.1" Language="en-US" Publisher="Rocky Lai, Mindstyler" />
         <DisplayName>ShaderlabVS</DisplayName>
         <Description xml:space="preserve">ShaderlabVS is a Visual Studio plugin for Unity3D shader programming.</Description>
-        <MoreInfo>https://github.com/wudixiaop/ShaderlabVS/blob/master/README.md</MoreInfo>
+        <MoreInfo>https://github.com/Mindstyler/ShaderlabVS/blob/master/README.md</MoreInfo>
         <License>License.txt</License>
-        <GettingStartedGuide>https://github.com/wudixiaop/ShaderlabVS/blob/master/README.md</GettingStartedGuide>
+        <GettingStartedGuide>https://github.com/Mindstyler/ShaderlabVS/blob/master/README.md</GettingStartedGuide>
     </Metadata>
     <Installation>
         <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
