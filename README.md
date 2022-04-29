@@ -60,16 +60,14 @@ Development
 ![](./img/DebugSettings.PNG)
 
 ### Support Visual Studio Versions:
-* Visual Studio 2013
-* Visual Studio 2015
-* Visual Studio 2017
+* Visual Studio 2022
 
-__The other version are not tested, not sure if there are also work or not.__
+### Updated for Visual Studio 2022 by https://github.com/Mindstyler
 
 ### Thanks To
 
 晨曦
 
-### Buy me a coffe
+<!--### Buy me a coffe-->
 
-If you like this extension, and want to buy me a coffee. You can via [Paypal](http://paypal.me/rockylai).
+<!--If you like this extension, and want to buy me a coffee. You can via [Paypal](http://paypal.me/rockylai).-->
