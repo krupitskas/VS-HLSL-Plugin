@@ -6,12 +6,12 @@ using ShaderlabVS.Data;
 namespace ShaderlabVS.UnitTest
 {
     [TestClass]
-    public class DefinationReaderTest
+    public class DefinitionReaderTest
     {
         [TestMethod]
         public void ParseTest()
         {
-            DefinationReader dr = new DefinationReader(@"Data\test.def");
+            DefinitionReader dr = new DefinitionReader(@"Data\test.def");
             dr.Read();
             StringBuilder sb = new StringBuilder();
 

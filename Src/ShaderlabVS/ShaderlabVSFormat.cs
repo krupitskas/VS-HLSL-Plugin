@@ -148,9 +148,9 @@ namespace ShaderlabVS
     [Name(Constants.ShaderlabBracesMarker)]
     [UserVisible(true)]
     [Order(Before = Priority.Default)]
-    internal sealed class BraceMarkerDefination : MarkerFormatDefinition
+    internal sealed class BraceMarkerDefinition : MarkerFormatDefinition
     {
-        public BraceMarkerDefination()
+        public BraceMarkerDefinition()
         {
             DisplayName = Constants.ShaderlabBracesMarker;
             BackgroundColor = Colors.Gray;

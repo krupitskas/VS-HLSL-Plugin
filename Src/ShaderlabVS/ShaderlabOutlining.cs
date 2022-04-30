@@ -23,11 +23,11 @@ namespace ShaderlabVS
         {
             _textBuffer = buffer;
             _regions = new List<Region>();
-            _textBuffer.Changed += textBuffer_Changed;
+            _textBuffer.Changed += TextBufferChanged;
             GetRegions();
         }
 
-        private void textBuffer_Changed(object sender, TextContentChangedEventArgs e)
+        private void TextBufferChanged(object sender, TextContentChangedEventArgs e)
         {
             if (e.After == _textBuffer.CurrentSnapshot)
             {

@@ -21,7 +21,7 @@ namespace ShaderlabVS
     {
         [Export]
         [Name(Constants.ContentType)]
-        [BaseDefinition(Constants.BaseDefination)]
+        [BaseDefinition(Constants.BaseDefinition)]
         public static ContentTypeDefinition ShaderlabContentType = null;
 
         [Export]

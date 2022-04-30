@@ -1,12 +1,11 @@
 using System;
 
-namespace ShaderlabVS.Data
-{
-    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
-    internal sealed class DefinationKeyAttribute : Attribute
-    {
-        public string Name { get; set; }
+namespace ShaderlabVS.Data;
 
-        public DefinationKeyAttribute(string name) => Name = name;
-    }
+[AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+internal sealed class DefinitionKeyAttribute : Attribute
+{
+    public string Name { get; set; }
+
+    public DefinitionKeyAttribute(string name) => Name = name;
 }

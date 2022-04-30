@@ -12,11 +12,11 @@ namespace ShaderlabVS.UnitTest
         public void TestUnityBuiltInValues()
         {
             string defFileName = @"Data\Unity3D_values.def";
-            DefinationReader dr = new DefinationReader(defFileName);
+            DefinitionReader dr = new DefinitionReader(defFileName);
             dr.Read();
             Console.WriteLine(dr.Sections.Count);
 
-            List<UnityBuiltinValue> dataList = DefinationDataProvider<UnityBuiltinValue>.ProvideFromFile(defFileName);
+            List<UnityBuiltinValue> dataList = DefinitionDataProvider<UnityBuiltinValue>.ProvideFromFile(defFileName);
             Console.WriteLine(dataList.Count);
 
             foreach (UnityBuiltinValue val in dataList)
@@ -33,7 +33,7 @@ namespace ShaderlabVS.UnitTest
         public void TestHLSLCGFunctions()
         {
             string file = "Data\\HLSL_CG_functions.def";
-            List<HLSLCGFunction> funList = DefinationDataProvider<HLSLCGFunction>.ProvideFromFile(file);
+            List<HLSLCGFunction> funList = DefinitionDataProvider<HLSLCGFunction>.ProvideFromFile(file);
 
             foreach (HLSLCGFunction fun in funList)
             {
@@ -49,7 +49,7 @@ namespace ShaderlabVS.UnitTest
         public void TestHLSLKeywords()
         {
             string file = "Data\\HLSL_CG_Keywords.def";
-            List<HLSLCGKeywords> funList = DefinationDataProvider<HLSLCGKeywords>.ProvideFromFile(file);
+            List<HLSLCGKeywords> funList = DefinitionDataProvider<HLSLCGKeywords>.ProvideFromFile(file);
 
             foreach (HLSLCGKeywords fun in funList)
             {
@@ -63,7 +63,7 @@ namespace ShaderlabVS.UnitTest
         public void TestHLSLDatatype()
         {
             string file = "Data\\HLSL_CG_datatype.def";
-            List<HLSLCGDataTypes> list = DefinationDataProvider<HLSLCGDataTypes>.ProvideFromFile(file);
+            List<HLSLCGDataTypes> list = DefinitionDataProvider<HLSLCGDataTypes>.ProvideFromFile(file);
 
             foreach (HLSLCGDataTypes dt in list)
             {
@@ -76,7 +76,7 @@ namespace ShaderlabVS.UnitTest
         public void TestUnitydatatype()
         {
             string file = "Data\\Unity3D_datatype.def";
-            List<UnityBuiltinDatatype> list = DefinationDataProvider<UnityBuiltinDatatype>.ProvideFromFile(file);
+            List<UnityBuiltinDatatype> list = DefinitionDataProvider<UnityBuiltinDatatype>.ProvideFromFile(file);
 
             foreach (UnityBuiltinDatatype item in list)
             {
@@ -90,7 +90,7 @@ namespace ShaderlabVS.UnitTest
         public void TestUnityFunctions()
         {
             string file = "Data\\Unity3D_functions.def";
-            List<UnityBuiltinFunction> funList = DefinationDataProvider<UnityBuiltinFunction>.ProvideFromFile(file);
+            List<UnityBuiltinFunction> funList = DefinitionDataProvider<UnityBuiltinFunction>.ProvideFromFile(file);
 
             foreach (UnityBuiltinFunction fun in funList)
             {
@@ -106,7 +106,7 @@ namespace ShaderlabVS.UnitTest
         public void TestUnityMacros()
         {
             string file = "Data\\Unity3D_macros.def";
-            List<UnityBuiltinMacros> list = DefinationDataProvider<UnityBuiltinMacros>.ProvideFromFile(file);
+            List<UnityBuiltinMacros> list = DefinitionDataProvider<UnityBuiltinMacros>.ProvideFromFile(file);
 
             foreach (UnityBuiltinMacros item in list)
             {
