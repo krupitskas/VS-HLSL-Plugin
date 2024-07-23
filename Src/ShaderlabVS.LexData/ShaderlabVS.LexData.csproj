@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <PropertyGroup>
     <AssemblyTitle>ShaderlabVS.LexData</AssemblyTitle>
     <Product>ShaderlabVS.LexData</Product>
@@ -15,11 +13,9 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
-
   <PropertyGroup>
     <OutDir>bin\Release\</OutDir>
   </PropertyGroup>
-
   <!--<PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -58,13 +54,14 @@
     </Compile>
   </ItemGroup>
   <PropertyGroup>
-    <PreBuildEvent>pushd $(ProjectDir)
-
-$(SolutionDir)ShaderlabVS.LexTools\$(OutDir)\ShaderlabVS.LexTools.exe Shaderlab.lex
-$(SolutionDir)ShaderlabVS\gplex.exe Shaderlab.lex
-
-popd</PreBuildEvent>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>ShaderlabVS.LexData.Program</StartupObject>
+    <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="pushd $(ProjectDir)&#xD;&#xA;&#xD;&#xA;$(SolutionDir)ShaderlabVS.LexTools\$(OutDir)\ShaderlabVS.LexTools.exe Shaderlab.lex&#xD;&#xA;$(SolutionDir)ShaderlabVS\gplex.exe Shaderlab.lex&#xD;&#xA;&#xD;&#xA;popd" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

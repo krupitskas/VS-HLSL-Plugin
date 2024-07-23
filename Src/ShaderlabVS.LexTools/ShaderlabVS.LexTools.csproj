@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <PropertyGroup>
     <AssemblyTitle>ShaderlabVS.LexTools</AssemblyTitle>
     <Product>ShaderlabVS.LexTools</Product>
@@ -14,8 +12,10 @@
     <!--<Guid>ec31f0a9-673f-4ff6-8974-7c38f1be1a29</Guid>-->
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
+    <OutputType>WinExe</OutputType>
+    <PlatformTarget>x64</PlatformTarget>
+    <StartupObject>ShaderlabVS.LexTools.Program</StartupObject>
   </PropertyGroup>
-
   <!--<PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>

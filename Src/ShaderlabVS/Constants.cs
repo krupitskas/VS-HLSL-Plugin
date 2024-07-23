@@ -18,6 +18,8 @@ namespace ShaderlabVS
 
         public const string ShaderFileNameExt = ".shader";
         public const string ComputeShaderFileNameExt = ".compute";
+        public const string UnrealShaderFileNameExt = ".usf";
+        public const string UnrealShaderHeaderFileNameExt = ".ush";
         public const string CGIncludeFileExt = ".cginc";
         public const string GLSLIncludeFileExt = ".glslinc";
         public const string CGFile = ".cg";

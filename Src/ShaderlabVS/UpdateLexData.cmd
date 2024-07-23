@@ -7,17 +7,7 @@ SET LEX=3.lex
 SET LEX_LIST=3.lst
 SET DATA_APP=data.exe
 
-
-SET VS_DEV_BAT="%VS140COMNTOOLS%VsDevCmd.bat"
-
-IF NOT EXIST %VS_DEV_BAT% (
-    SET VS_DEV_BAT="%VS150COMNTOOLS%VsDevCmd.bat"
-    IF NOT EXIST %VS_DEV_BAT% (
-    	SET VS_DEV_BAT="%VS120COMNTOOLS%VsDevCmd.bat"
-    )
-) ELSE (
-    GOTO :MAIN
-)
+SET VS_DEV_BAT="%VS170COMNTOOLS%VsDevCmd.bat"
 
 IF NOT EXIST %VS_DEV_BAT% (
     ECHO "There are no supported Visual Studio version installed on your machine!!!"

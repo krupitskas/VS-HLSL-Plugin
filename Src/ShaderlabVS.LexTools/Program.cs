@@ -4,7 +4,7 @@ using ShaderlabVS.Data;
 
 namespace ShaderlabVS.LexTools;
 
-internal class Program
+class Program
 {
     private static readonly string s_lexFormat = """
         %namespace ShaderlabVS.Lexer
@@ -157,9 +157,9 @@ internal class Program
         %%
         """;
 
-    private static void Main(string[] args)
+    public static void Main(string[] args)
     {
-        string convertedFileName = "Shaerlab.lex";
+        string convertedFileName = "Shaderlab.lex";
 
         if (args.Length > 0)
         {

@@ -35,6 +35,16 @@ namespace ShaderlabVS
         public static FileExtensionToContentTypeDefinition ComputeShaderFileType = null;
 
         [Export]
+        [FileExtension(Constants.UnrealShaderFileNameExt)]
+        [ContentType(Constants.ContentType)]
+        public static FileExtensionToContentTypeDefinition UnrealShaderFileName = null;
+
+        [Export]
+        [FileExtension(Constants.UnrealShaderHeaderFileNameExt)]
+        [ContentType(Constants.ContentType)]
+        public static FileExtensionToContentTypeDefinition UnrealShaderHeaderFileName = null;
+
+        [Export]
         [FileExtension(Constants.CGIncludeFileExt)]
         [ContentType(Constants.ContentType)]
         public static FileExtensionToContentTypeDefinition CgIncludeFileType = null;
